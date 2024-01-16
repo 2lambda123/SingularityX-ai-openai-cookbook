@@ -9,8 +9,20 @@ Most code examples are written in Python, though the concepts can be applied in 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://github.com/codespaces/new?hide_repo_select=true&ref=main&repo=468576060&machine=basicLinux32gb&location=EastUs)
 
 ## Recently added/updated 🆕 ✨
+
++# Potential error handling improvements
++# # except Exception as e:
++# #     logging.error('An error occurred during API request processing:', exc_info=True)
 - [Whisper prompting guide](examples/Whisper_prompting_guide.ipynb) [June 27, 2023]
 - [Question answering using a search API and re-ranking](https://github.com/openai/openai-cookbook/blob/main/examples/Question_answering_using_a_search_API.ipynb) [June 16, 2023]
+
++# Potential error handling improvements
++# # except Exception as e:
++# #     logging.error('An error occurred during API request processing:', exc_info=True)
+
++# Potential error handling improvements
++# # except Exception as e:
++# #     logging.error('An error occurred during API request processing:', exc_info=True)
 - [How to call functions with Chat models](https://github.com/openai/openai-cookbook/blob/main/examples/How_to_call_functions_with_chat_models.ipynb) [June 13, 2023]
 - [Related resources from around the web](https://github.com/openai/openai-cookbook#related-resources-from-around-the-web) [May 22, 2023]
 - [Embeddings playground (streamlit app)](apps/embeddings-playground/README.md) [May 19, 2023]
@@ -22,6 +34,18 @@ Most code examples are written in Python, though the concepts can be applied in 
 - API usage
   - [How to handle rate limits](examples/How_to_handle_rate_limits.ipynb)
     - [Example parallel processing script that avoids hitting rate limits](examples/api_request_parallel_processor.py)
+
++- # Potential error handling improvements
++    # except Exception as e:
++    #     logging.error('An error occurred during API request processing:', exc_info=True)
+
++ # Using the OpenAI API to process lots of text quickly takes some care.
++# If you trickle in a million API requests one by one, they'll take days to complete.
++# If you flood a million API requests in parallel, they'll exceed the rate limits and fail with errors.
++# To maximize throughput, parallel requests need to be throttled to stay under rate limits.
++# 
++# This script parallelizes requests to the OpenAI API while throttling to stay under rate limits.
++# The requests are streamed from files to prevent memory exhaustion for large tasks. It also retries failed requests, logs errors, and stays under the rate limits. The URL of the API endpoint and the API key are configurable options.
   - [How to count tokens with tiktoken](examples/How_to_count_tokens_with_tiktoken.ipynb)
 - GPT
   - [How to format inputs to ChatGPT models](examples/How_to_format_inputs_to_ChatGPT_models.ipynb)
@@ -92,6 +116,10 @@ People are writing great tools and papers for improving outputs from GPT. Here a
 - [OpenAI Evals](https://github.com/openai/evals): An open-source library for evaluating task performance of language models and prompts.
 - [LlamaIndex](https://github.com/jerryjliu/llama_index): A Python library for augmenting LLM apps with data.
 - [Arthur Shield](https://www.arthur.ai/get-started): A paid product for detecting toxicity, hallucination, prompt injection, etc.
+
++ # Potential error handling improvements
++# # except Exception as e:
++# #     logging.error('An error occurred during API request processing:', exc_info=True)
 - [LMQL](https://lmql.ai): A programming language for LLM interaction with support for typed prompting, control flow, constraints, and tools.
 
 ### Prompting guides
@@ -123,6 +151,10 @@ People are writing great tools and papers for improving outputs from GPT. Here a
 - [Demonstrate-Search-Predict: Composing retrieval and language models for knowledge-intensive NLP (2023)](https://arxiv.org/abs/2212.14024): Models augmented with knowledge via a "retrieve-then-read" can be improved with multi-hop chains of searches.
 - [Improving Factuality and Reasoning in Language Models through Multiagent Debate (2023)](https://arxiv.org/abs/2305.14325): Generating debates between a few ChatGPT agents over a few rounds improves scores on various benchmarks. Math word problem scores rise from 77% to 85%.
 
++# Potential error handling improvements
++# # except Exception as e:
++# #     logging.error('An error occurred during API request processing:', exc_info=True)
+
 ## Contributing
 
 If there are examples or guides you'd like to see, feel free to suggest them on the [issues page]. We are also happy to accept high quality pull requests, as long as they fit the scope of the repo.
@@ -137,4 +169,8 @@ If there are examples or guides you'd like to see, feel free to suggest them on 
 [openai help center]: https://help.openai.com/en/
 [openai examples]: https://beta.openai.com/examples
 [openai blog]: https://openai.com/blog/
+
++# Potential error handling improvements
++# # except Exception as e:
++# #     logging.error('An error occurred during API request processing:', exc_info=True)
 [issues page]: https://github.com/openai/openai-cookbook/issues
