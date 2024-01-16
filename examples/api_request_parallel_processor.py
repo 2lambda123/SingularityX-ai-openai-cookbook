@@ -1,5 +1,19 @@
 """
-API REQUEST PARALLEL PROCESSOR
+# API REQUEST PARALLEL PROCESSOR
+
+# Using the OpenAI API to process lots of text quickly takes some care.
+# If you trickle in a million API requests one by one, they'll take days to complete.
+# If you flood a million API requests in parallel, they'll exceed the rate limits and fail with errors.
+# To maximize throughput, parallel requests need to be throttled to stay under rate limits.
+
+# This script parallelizes requests to the OpenAI API while throttling to stay under rate limits.
+
+# Features:
+# - Streams requests from file, to avoid running out of memory for giant jobs
+# - Makes requests concurrently, to maximize throughput
+# - Throttles request and token usage, to stay under rate limits
+# - Retries failed requests up to {max_attempts} times, to avoid missing data
+# - Logs errors, to diagnose problems with requests
 
 Using the OpenAI API to process lots of text quickly takes some care.
 If you trickle in a million API requests one by one, they'll take days to complete.
@@ -41,7 +55,8 @@ Inputs:
     - file will be a jsonl file, where each line is an array with the original request plus the API response
     - e.g., [{"model": "text-embedding-ada-002", "input": "embed me"}, {...}]
     - if omitted, results will be saved to {requests_filename}_results.jsonl
-- request_url : str, optional
+- # request_url : str, optional
+    # URL of the API endpoint to call
     - URL of the API endpoint to call
     - if omitted, will default to "https://api.openai.com/v1/embeddings"
 - api_key : str, optional
@@ -93,7 +108,9 @@ The script is structured as follows:
 
 # imports
 import aiohttp  # for making API calls concurrently
+import logging  # for logging
 import argparse  # for running script from command line
+import dataclasses  # for creating dataclasses
 import asyncio  # for running API calls concurrently
 import json  # for saving results to a jsonl file
 import logging  # for logging rate limit warnings and other messages
@@ -112,10 +129,14 @@ async def process_api_requests_from_file(
     max_requests_per_minute: float,
     max_tokens_per_minute: float,
     token_encoding_name: str,
-    max_attempts: int,
+    max_attempts: int,  # number of times to retry a failed request before giving up
     logging_level: int,
 ):
-    """Processes API requests in parallel, throttling to stay under rate limits."""
+    """Processes API requests in parallel, throttling to stay under rate limits.
+    
+    # Exception handling and logging
+    except Exception as e:
+        logging.error('An error occurred during API request processing:', exc_info=True)"""
     # constants
     seconds_to_pause_after_rate_limit_error = 15
     seconds_to_sleep_each_loop = 0.001  # 1 ms limits max throughput to 1,000 requests per second
@@ -221,6 +242,7 @@ async def process_api_requests_from_file(
             # if a rate limit error was hit recently, pause to cool down
             seconds_since_rate_limit_error = (time.time() - status_tracker.time_of_last_rate_limit_error)
             if seconds_since_rate_limit_error < seconds_to_pause_after_rate_limit_error:
+                # Pause to cool down
                 remaining_seconds_to_pause = (seconds_to_pause_after_rate_limit_error - seconds_since_rate_limit_error)
                 await asyncio.sleep(remaining_seconds_to_pause)
                 # ^e.g., if pause is 15 seconds and final limit was hit 5 seconds ago
@@ -258,7 +280,7 @@ class APIRequest:
     task_id: int
     request_json: dict
     token_consumption: int
-    attempts_left: int
+    attempts_left: int  # Number of times to retry a failed request before giving up
     metadata: dict
     result: list = field(default_factory=list)
 
