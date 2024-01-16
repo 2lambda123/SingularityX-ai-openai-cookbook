@@ -20,6 +20,7 @@ Example command to call script:
 python examples/api_request_parallel_processor.py \
   --requests_filepath examples/data/example_requests_to_parallel_process.jsonl \
   --save_filepath examples/data/example_requests_to_parallel_process_results.jsonl \
+  --save_filepath examples/data/example_requests_to_parallel_process_results.jsonl \
   --request_url https://api.openai.com/v1/embeddings \
   --max_requests_per_minute 1500 \
   --max_tokens_per_minute 6250000 \
@@ -108,12 +109,12 @@ async def process_api_requests_from_file(
     requests_filepath: str,
     save_filepath: str,
     request_url: str,
-    api_key: str,
-    max_requests_per_minute: float,
-    max_tokens_per_minute: float,
-    token_encoding_name: str,
-    max_attempts: int,
-    logging_level: int,
+    api_key: str = None,
+    max_requests_per_minute: float = 1500,
+    max_tokens_per_minute: float = 6250000,
+    token_encoding_name: str = 'cl100k_base',
+    max_attempts: int = 5,
+    logging_level: int = 20,
 ):
     """Processes API requests in parallel, throttling to stay under rate limits."""
     # constants
